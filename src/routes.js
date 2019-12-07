@@ -1,37 +1,33 @@
-import React from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import autenticacao from './config/autenticacao';
+// const express = require("express");
+// const routes = express.Router();
+// const UserController = require("./controllers/UserController");
+// const SessionController = require("./controllers/SessionController");
 
+// const authMiddleware = require("./middlewares/auth");
 
-import Login from './pages/Login';
-import Cadastro from './pages/CadastroUser';
-import MainPage from './pages/MainPage';
+// routes.get("/users/:email", UserController.index);
+// routes.post("/sessions", SessionController.store);
+// routes.post("/users", UserController.store);
+// routes.post("/cadastrar", UserController.store);
 
-// //Transformando render, de modo que possamos abrir somente se autenticacao == true
-// ... spread operator
-const RotaPrivada = ({ component: Component, ...rest }) => (
-    <Route {...rest} render={props => (
-        //Se for true
-        autenticacao ? (
-            <Component {...rest} />
-            //caso contrário
-        ) : (
-                <Redirect to={{ pahtname: '/', state: { from: props.location } }} />
-            )
+// routes.use(authMiddleware);
+// routes.delete("users/id:", UserController.destroy);
+// routes.get("/teste", (req, res) => res.json({ ok:true }));  
 
+// routes.get("/buscar/:email", UserController.index);
+// routes.put("/atualizar/:id", UserController.update);
+// routes.delete("/apagar/:id", UserController.destroy);
+// routes.get("/listar", UserController.list);
 
-    )} />
-);
+// module.exports = routes;
+const express = require("express");
+const routes = express.Router();
+const UserController = require("./controllers/UserController");
 
-export default function Mapa() {
-    return (
-        <BrowserRouter>
-            <Switch>
-                <Route exact path="/" component={Login} />
-                <RotaPrivada exact path="/MainPage" component={MainPage} />
-                {/* A página de cadastro só pode acessada por usuários autenticados */}
-                <Route exact path="/Cadastrar" component={Cadastro} />
-            </Switch>
-        </BrowserRouter>
-    );
-}
+routes.post("/cadastrar", UserController.store);
+routes.get("/buscar/:email", UserController.index);
+routes.put("/atualizar/:id", UserController.update);
+routes.delete("/apagar/:id", UserController.destroy);
+routes.get("/listar", UserController.list);
+
+module.exports = routes;
